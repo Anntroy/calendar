@@ -6,7 +6,6 @@
 
 body {
 	background:lightgrey;
-	border:none;
 }
 
 .clock {
@@ -16,20 +15,19 @@ body {
 	padding-bottom: 25px;
 }
 .calendar-days{
-	height:30px;
+	height:35px;
 	margin: 0 15%;
-	background-color: purple;
+	display: flex;
+	justify-content: space-around;
+	list-style: none;
 }
-ul {
-	list-style-type: none;
 
-}
-li {
-	width:14.28%;
-	float:left;
+.day-name {
+	height:100%;
+	width:14%;
 	color:orange;
+	background-color: grey;
 	text-align:center;
 	font-size: 30px;
-
-
+	font-weight:bold;
 }

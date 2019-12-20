@@ -5,20 +5,20 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<script src="main.js"></script>
 </head>
-<body onload="mainClock()">
+<body onload="setInterval(mainClock,500)">
 	<div class="clock">
 		<h1 id="main-clock"></h1>
 	</div>
 
-	<div class="calendar-days">
-		<ul>
-			<li>Su</li>
-			<li>Mo</li>
-			<li>Tu</li>
-			<li>We</li>
-			<li>Th</li>
-			<li>Fr</li>
-			<li>Sa</li>
+	<div>
+		<ul class="calendar-days">
+			<li class="day-name">Su</li>
+			<li class="day-name">Mo</li>
+			<li class="day-name">Tu</li>
+			<li class="day-name">We</li>
+			<li class="day-name">Th</li>
+			<li class="day-name">Fr</li>
+			<li class="day-name">Sa</li>
 		</ul>
 	</div>
 </body>
