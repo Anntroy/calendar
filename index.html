@@ -3,9 +3,12 @@
 <head>
 	<title>Calendar</title>
 	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="http://cdn.date-fns.org/v1.9.0/date_fns.min.js"></script>
 	<script src="main.js"></script>
+
 </head>
-<body onload="setInterval(mainClock,500)">
+<body>
+
 	<div class="clock">
 		<h1 id="main-clock"></h1>
 	</div>
@@ -20,6 +23,62 @@
 			<li class="day-name">Fr</li>
 			<li class="day-name">Sa</li>
 		</ul>
-	</div>
+
+		</div>
+		<div id="calendar-root">	
+			<div class="calendar">
+				<button class="date"></button>
+				<button class="date"></button>
+				<button class="date"></button>
+				<button class="date"></button>
+				<button class="date"></button>
+				<button class="date"></button>
+				<button class="date"></button>
+			</div>
+		
+			<div class="calendar">
+				<button class="date"></button>
+				<button class="date"></button>
+				<button class="date"></button>
+				<button class="date"></button>
+				<button class="date"></button>
+				<button class="date"></button>
+				<button class="date"></button>
+			</div>
+			<div class="calendar">
+				<button class="date"></button>
+				<button class="date"></button>
+				<button class="date"></button>
+				<button class="date"></button>
+				<button class="date"></button>
+				<button class="date"></button>
+				<button class="date"></button>
+			</div>
+		
+			<div class="calendar">
+				<button class="date"></button>
+				<button class="date"></button>
+				<button class="date"></button>
+				<button class="date"></button>
+				<button class="date"></button>
+				<button class="date"></button>
+				<button class="date"></button>
+			</div>
+		
+			<div class="calendar">
+				<button class="date"></button>
+				<button class="date"></button>
+				<button class="date"></button>
+				<button class="date"></button>
+				<button class="date"></button>
+				<button class="date"></button>
+				<button class="date"></button>
+			</div>
+		</div>
+	<footer>
+		<h1 id="month-year"></h1>
+	</footer>
+
+
 </body>
 </html>

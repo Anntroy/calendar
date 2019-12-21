@@ -4,24 +4,31 @@
 	font-family: "Courier New", Courier, monospace;
 }
 
-body {
+body,html {
 	background:lightgrey;
+	height:100%;
 }
 
 .clock {
 	color:grey;
-	text-align: center;
 	font-size: 60px;
-	padding-bottom: 25px;
+	height:15%;
+}
+#main-clock {
+	height:100%;
+	text-align: center;
 }
 .calendar-days{
-	height:35px;
+	height:10%;
 	margin: 0 15%;
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-between;
 	list-style: none;
+	padding-bottom: 10px;
 }
-
+#calendar-root{
+	height:60%;
+}
 .day-name {
 	height:100%;
 	width:14%;
@@ -30,4 +37,26 @@ body {
 	text-align:center;
 	font-size: 30px;
 	font-weight:bold;
+}
+.calendar{
+	height:12%;
+	margin: 0 15%;
+	display: flex;
+	justify-content: space-between;
+	padding-bottom:3px;
+}
+.date {
+	margin:0;
+	border:0;
+	width:14%;
+	background-color: darkgrey;
+	box-shadow: 0;
+}
+.footer{
+	height:13%;
+}
+#month-year {
+	text-align: center;
+	font-size: 50px;
+
 }
