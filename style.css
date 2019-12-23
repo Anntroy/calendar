@@ -57,11 +57,23 @@ body,html {
 	font-weight:bold;
 }
 
-.footer{
-	height:13%;
+#footer{
+	height:15%;
+	display:flex;
+	justify-content: center;
+
+}
+
+.footer-button {
+	width:10%;
+	height:40%;
+	font-size: 2em;
+	font-weight:bold;
 }
 #month-year {
 	text-align: center;
-	font-size: 50px;
+	font-size: 4em;
+	width:50%;
+	height:100%;
 
 }

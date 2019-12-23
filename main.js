@@ -28,19 +28,42 @@ window.onload = function(){
 				//Deciding to erase the block or add date.
 				if (i<firstDay || date > lastDay){
 					day.style.opacity = 0;
+					day.innerHTML = "";
 				} else {
 					day.innerHTML = date++;
+					day.style.opacity = 1;
 				}
-			}
+
+			}	
 			firstDay = 0;
 		}
+		document.getElementById("month-year").innerHTML = dateFns.format(currMonth, 'MMMM, ' + yearTrack);
 	}
+	
+	function updateMonth(x){
+		
+		if((x<0) && (monthTrack==0)){
+			monthTrack = 11;
+			yearTrack--;
+		} else if ((x>0) && (monthTrack == 11)){
+			monthTrack = 0;
+			yearTrack++;
+		} else {
+			monthTrack += x;
+		}
+		currMonth = dateFns.setMonth(currMonth, monthTrack);
+		console.log(currMonth);
+		currMonth = dateFns.setYear(currMonth, yearTrack);
+		updateCalendar();
+	}
+
 
 	var currMonth = new Date();
 	var yearTrack = dateFns.getYear(currMonth);
 	var monthTrack = dateFns.getMonth(currMonth);
-	
-	setInterval(mainClock,500);
-	
 	updateCalendar();
+	setInterval(mainClock,500);
+	document.getElementById("left").addEventListener("click",function(){updateMonth(-1)});
+	document.getElementById("right").addEventListener("click",function(){updateMonth(1)});
+
 }
