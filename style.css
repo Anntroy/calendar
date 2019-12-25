@@ -75,5 +75,35 @@ body,html {
 	font-size: 4em;
 	width:50%;
 	height:100%;
+}
 
+#image-container {
+	display:none;
+	z-index:1;
+	position:fixed;
+	width:100%;
+	height:100%;
+	left:0;
+	top:0;
+	background-color: rgba(0,0,0,0.9);
+}
+#close {
+	font-family:verdana;
+	position:absolute;
+	top:40px;
+	right:120px;
+}
+#close:hover{
+	color:blue;
+	cursor:pointer;
+}
+#image{
+	padding-top:200px;
+	margin:auto;
+	display:block;
+}
+#quote{
+	padding-top: 20px;
+	text-align: center;
+	color:red;
 }

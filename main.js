@@ -29,9 +29,11 @@ window.onload = function(){
 				if (i<firstDay || date > lastDay){
 					day.style.opacity = 0;
 					day.innerHTML = "";
+					day.removeEventListener("click",imageAppear);
 				} else {
 					day.innerHTML = date++;
 					day.style.opacity = 1;
+					day.addEventListener("click",imageAppear);
 				}
 
 			}	
@@ -51,12 +53,17 @@ window.onload = function(){
 		} else {
 			monthTrack += x;
 		}
+		
 		currMonth = dateFns.setMonth(currMonth, monthTrack);
-		console.log(currMonth);
 		currMonth = dateFns.setYear(currMonth, yearTrack);
 		updateCalendar();
 	}
-
+	function imageAppear(){
+		document.getElementById("image-container").style.display = "block";
+	}
+	function exitOut(){
+		document.getElementById("image-container").style.display = "none";
+	}
 
 	var currMonth = new Date();
 	var yearTrack = dateFns.getYear(currMonth);
@@ -65,5 +72,6 @@ window.onload = function(){
 	setInterval(mainClock,500);
 	document.getElementById("left").addEventListener("click",function(){updateMonth(-1)});
 	document.getElementById("right").addEventListener("click",function(){updateMonth(1)});
-
+	document.getElementById("close").addEventListener("click", exitOut);
+	
 }
