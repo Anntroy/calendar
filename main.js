@@ -58,12 +58,29 @@ window.onload = function(){
 		currMonth = dateFns.setYear(currMonth, yearTrack);
 		updateCalendar();
 	}
-	function imageAppear(){
-		document.getElementById("image-container").style.display = "block";
+	
+	async function newImage(){
+		let response = await fetch('https://dog.ceo/api/breeds/image/random');
+		let data = await response.json();
+		let url = data.message;
+		
+		//Setting the image
+		document.getElementById("image").src = url;
+
+		//Setting the breed string
+		let breed = url.split("/")[4].toLowerCase();
+		document.getElementById("quote").innerHTML = "This is a " + breed;
 	}
+
+	function imageAppear(){
+		document.getElementById("image-container").style.display = "flex";
+	}
+
 	function exitOut(){
 		document.getElementById("image-container").style.display = "none";
+		newImage();
 	}
+	
 
 	var currMonth = new Date();
 	var yearTrack = dateFns.getYear(currMonth);
@@ -73,5 +90,6 @@ window.onload = function(){
 	document.getElementById("left").addEventListener("click",function(){updateMonth(-1)});
 	document.getElementById("right").addEventListener("click",function(){updateMonth(1)});
 	document.getElementById("close").addEventListener("click", exitOut);
+	newImage();
 	
 }

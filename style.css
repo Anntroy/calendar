@@ -86,6 +86,8 @@ body,html {
 	left:0;
 	top:0;
 	background-color: rgba(0,0,0,0.9);
+	justify-content: center;
+	flex-direction:column;
 }
 #close {
 	font-family:verdana;
@@ -94,16 +96,17 @@ body,html {
 	right:120px;
 }
 #close:hover{
+	transition: color 0.5s;
 	color:blue;
 	cursor:pointer;
 }
 #image{
-	padding-top:200px;
-	margin:auto;
-	display:block;
+	max-height: 800px;
+	max-width: 1000px;
+	align-self:center;
 }
 #quote{
-	padding-top: 20px;
+	font-size:20px;
 	text-align: center;
 	color:red;
 }
