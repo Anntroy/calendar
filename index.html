@@ -6,11 +6,18 @@
 	<script src="http://cdn.date-fns.org/v1.9.0/date_fns.min.js"></script>
 </head>
 <body>
-
-	<div class="clock">
-		<h1 id="main-clock"></h1>
+	<div id="top-bar">
+		<div class="clock">
+			<h1 id="main-clock"></h1>
+		</div>
+		<div class="dropdown">
+			<select name="view" id="view-changer">
+				<option value="monthly">Monthly</option>
+				<option value="weekly">Weekly</option>
+				<option value="daily">Daily</option>
+			</select>
+		</div>
 	</div>
-
 	<div>
 		<ul class="calendar-days">
 			<li class="day-name">Su</li>

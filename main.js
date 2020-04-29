@@ -5,12 +5,12 @@ window.onload = function(){
 		let clock = document.getElementById("main-clock");
 		clock.innerHTML = new Date().toLocaleTimeString();
 	}
-	function updateCalendar(){
+	function updateMonthView(){
 		
 		//Finding the first day of week to start at
 		//and the number of days in the month
-		let firstDay = dateFns.startOfMonth(currMonth);
-		let lastDay = dateFns.endOfMonth(currMonth);
+		let firstDay = dateFns.startOfMonth(currDate);
+		let lastDay = dateFns.endOfMonth(currDate);
 		firstDay = dateFns.getDay(firstDay);
 		lastDay = dateFns.getDate(lastDay);
 		
@@ -39,7 +39,7 @@ window.onload = function(){
 			}	
 			firstDay = 0;
 		}
-		document.getElementById("month-year").innerHTML = dateFns.format(currMonth, 'MMMM, ' + yearTrack);
+		document.getElementById("month-year").innerHTML = dateFns.format(currDate, 'MMMM, ' + yearTrack);
 	}
 	
 	function updateMonth(x){
@@ -54,9 +54,19 @@ window.onload = function(){
 			monthTrack += x;
 		}
 		
-		currMonth = dateFns.setMonth(currMonth, monthTrack);
-		currMonth = dateFns.setYear(currMonth, yearTrack);
-		updateCalendar();
+		currDate = dateFns.setMonth(currDate, monthTrack);
+		currDate = dateFns.setYear(currDate, yearTrack);
+		updateMonthView();
+	}
+	function changeView(){
+		let change = dropDown.value;
+		if (change === 'monthly'){
+			updateMonthView();
+		} else if (change === 'weekly'){
+			updateWeekView();
+		} else {
+			updateDayView();
+		}
 	}
 	
 /*	async function newImage(){
@@ -81,15 +91,17 @@ window.onload = function(){
 		newImage();
 	}
 */
+	let dropDown = document.getElementById("view-changer");
+	let currDate = new Date();
+	let yearTrack = dateFns.getYear(currDate);
+	let monthTrack = dateFns.getMonth(currDate);
+	let dateTrack = dateFns.getDate(currDate);
 
-	let currMonth = new Date();
-	let yearTrack = dateFns.getYear(currMonth);
-	let monthTrack = dateFns.getMonth(currMonth);
-	updateCalendar();
+	updateMonthView();
 	setInterval(mainClock,500);
 	document.getElementById("left").addEventListener("click", () => {updateMonth(-1)});
 	document.getElementById("right").addEventListener("click", () => {updateMonth(1)});
-	
+	dropDown.addEventListener("onchange", changeView);
 	//document.getElementById("close").addEventListener("click", exitOut);
 	//newImage();
 	
