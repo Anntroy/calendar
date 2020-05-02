@@ -5,6 +5,26 @@ window.onload = function(){
 		let clock = document.getElementById("main-clock");
 		clock.innerHTML = new Date().toLocaleTimeString();
 	}
+	function updateDayView(){
+
+	}
+	function updateWeekView(){
+
+		week = document.getElementById("calendar-root").children[0];
+		let date = dateFns.startOfWeek(currDate);
+		
+		for (let i = 0; i < 7; i++) {
+			let day = week.children[i];
+			day.style.opacity = 1;
+			day.innerHTML = dateFns.getDate(date);
+			date = dateFns.addDays(date, 1);
+			day.style.display = "inline-block";
+			day.addEventListener("click", null);
+		}
+
+		
+	}
+
 	function updateMonthView(){
 		
 		//Finding the first day of week to start at
@@ -39,70 +59,46 @@ window.onload = function(){
 			}	
 			firstDay = 0;
 		}
-		document.getElementById("month-year").innerHTML = dateFns.format(currDate, 'MMMM, ' + yearTrack);
+		document.getElementById("month-year").innerHTML = dateFns.format(currDate, 'MMMM, ' + dateFns.getYear(currDate));
 	}
-	
-	function updateMonth(x){
-		
-		if((x<0) && (monthTrack==0)){
-			monthTrack = 11;
-			yearTrack--;
-		} else if ((x>0) && (monthTrack == 11)){
-			monthTrack = 0;
-			yearTrack++;
-		} else {
-			monthTrack += x;
-		}
-		
-		currDate = dateFns.setMonth(currDate, monthTrack);
-		currDate = dateFns.setYear(currDate, yearTrack);
+	const updateDays = x => {currDate = dateFns.addDays(currDate, x);}
+
+	const updateMonth = x => {	
+		currDate = dateFns.addMonths(currDate, x);
 		updateMonthView();
 	}
-	function changeView(){
-		let change = dropDown.value;
-		if (change === 'monthly'){
-			updateMonthView();
-		} else if (change === 'weekly'){
-			updateWeekView();
-		} else {
-			updateDayView();
+	const monthDisplay = displayVal => {
+		let month = document.getElementById("calendar-root");
+		for(let i = 1; i < 6; i++) {
+			month.children[i].style.display = displayVal;
 		}
 	}
 	
-/*	async function newImage(){
-		let response = await fetch('https://dog.ceo/api/breeds/image/random');
-		let data = await response.json();
-		let url = data.message;
+	function changeView() {
+
+		let change = document.getElementById("view-changer").value;
 		
-		//Setting the image
-		document.getElementById("image").src = url;
+		if (change === 'monthly'){
+			monthDisplay("flex");
+			updateMonthView();
+		} else if (change === 'weekly'){
+			monthDisplay("none");
+			updateWeekView();		
+		} else {
+			monthDisplay("none");
+			updateDayView();
+		}
+		prevView = change;
 
-		//Setting the breed string
-		let breed = url.split("/")[4].toLowerCase();
-		document.getElementById("quote").innerHTML = "This is a " + breed;
 	}
 
-	function imageAppear(){
-		document.getElementById("image-container").style.display = "flex";
-	}
-
-	function exitOut(){
-		document.getElementById("image-container").style.display = "none";
-		newImage();
-	}
-*/
-	let dropDown = document.getElementById("view-changer");
+	let prevView= document.getElementById("view-changer").value;
 	let currDate = new Date();
-	let yearTrack = dateFns.getYear(currDate);
-	let monthTrack = dateFns.getMonth(currDate);
-	let dateTrack = dateFns.getDate(currDate);
 
 	updateMonthView();
 	setInterval(mainClock,500);
 	document.getElementById("left").addEventListener("click", () => {updateMonth(-1)});
 	document.getElementById("right").addEventListener("click", () => {updateMonth(1)});
-	dropDown.addEventListener("onchange", changeView);
-	//document.getElementById("close").addEventListener("click", exitOut);
-	//newImage();
-	
+	document.getElementById("view-changer").addEventListener("change", changeView);
+
 }
