@@ -5,12 +5,16 @@ window.onload = function(){
 		let clock = document.getElementById("main-clock");
 		clock.innerHTML = new Date().toLocaleTimeString();
 	}
-	function updateDayView(){
-
+	function changeDailyView(){
+		let day = document.getElementById("calendar-root").children[0].children[0];
+		day.style.opacity = 1;
+		day.innerHTML = dateFns.getDate(currDate);
+		updateFooter();
 	}
-	function updateWeekView(){
 
-		week = document.getElementById("calendar-root").children[0];
+	function changeWeekView(){
+
+		let week = document.getElementById("calendar-root").children[0];
 		let date = dateFns.startOfWeek(currDate);
 		
 		for (let i = 0; i < 7; i++) {
@@ -18,10 +22,10 @@ window.onload = function(){
 			day.style.opacity = 1;
 			day.innerHTML = dateFns.getDate(date);
 			date = dateFns.addDays(date, 1);
-			day.style.display = "inline-block";
+			day.style.display = "block";
 			day.addEventListener("click", null);
 		}
-
+		updateFooter();
 		
 	}
 
@@ -59,18 +63,32 @@ window.onload = function(){
 			}	
 			firstDay = 0;
 		}
-		document.getElementById("month-year").innerHTML = dateFns.format(currDate, 'MMMM, ' + dateFns.getYear(currDate));
+		updateFooter();
 	}
-	const updateDays = x => {currDate = dateFns.addDays(currDate, x);}
+	
+	const changeDate = x => {	
+		if (prevView === 'monthly'){
+			currDate = dateFns.addMonths(currDate, x);
+			updateMonthView()
+		} else if (prevView === 'weekly'){
+			currDate = dateFns.addWeeks(currDate, x);
+			changeWeekView();
+		} else {
+			currDate = dateFns.addDays(currDate, x);
+			changeDailyView();
+		}
+	}
 
-	const updateMonth = x => {	
-		currDate = dateFns.addMonths(currDate, x);
-		updateMonthView();
-	}
 	const monthDisplay = displayVal => {
 		let month = document.getElementById("calendar-root");
 		for(let i = 1; i < 6; i++) {
 			month.children[i].style.display = displayVal;
+		}
+	}
+	const weekDisplay = displayVal => {
+		let week = document.getElementById("calendar-root").children[0];
+		for(let i = 1; i < 7; i++){
+			week.children[i].style.display = displayVal;
 		}
 	}
 	
@@ -79,26 +97,31 @@ window.onload = function(){
 		let change = document.getElementById("view-changer").value;
 		
 		if (change === 'monthly'){
+			weekDisplay("block");
 			monthDisplay("flex");
 			updateMonthView();
 		} else if (change === 'weekly'){
 			monthDisplay("none");
-			updateWeekView();		
+			weekDisplay("block");
+			changeWeekView();		
 		} else {
 			monthDisplay("none");
-			updateDayView();
+			weekDisplay("none");
+			changeDailyView();
 		}
 		prevView = change;
 
 	}
-
+	const updateFooter = () => {
+		document.getElementById("month-year").innerHTML = dateFns.format(currDate, 'MMMM, ' + dateFns.getYear(currDate));
+	}
 	let prevView= document.getElementById("view-changer").value;
 	let currDate = new Date();
 
 	updateMonthView();
 	setInterval(mainClock,500);
-	document.getElementById("left").addEventListener("click", () => {updateMonth(-1)});
-	document.getElementById("right").addEventListener("click", () => {updateMonth(1)});
+	document.getElementById("left").addEventListener("click", () => {changeDate(-1)});
+	document.getElementById("right").addEventListener("click", () => {changeDate(1)});
 	document.getElementById("view-changer").addEventListener("change", changeView);
 
 }
