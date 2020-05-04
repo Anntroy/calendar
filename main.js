@@ -8,6 +8,13 @@ window.onload = function(){
 	function changeDailyView(){
 		let day = document.getElementById("calendar-root").children[0].children[0];
 		day.style.opacity = 1;
+		updateDailyView();
+
+	}
+	function updateDailyView(){
+		let day = document.getElementById("calendar-root").children[0].children[0];
+		let title = document.querySelector(".calendar-days").children[0];
+		title.innerHTML = dateFns.format(currDate, 'dddd');
 		day.innerHTML = dateFns.getDate(currDate);
 		updateFooter();
 	}
@@ -75,7 +82,7 @@ window.onload = function(){
 			changeWeekView();
 		} else {
 			currDate = dateFns.addDays(currDate, x);
-			changeDailyView();
+			updateDailyView();
 		}
 	}
 
@@ -87,7 +94,10 @@ window.onload = function(){
 	}
 	const weekDisplay = displayVal => {
 		let week = document.getElementById("calendar-root").children[0];
+		let titles = document.querySelector(".calendar-days");
+		titles.children[0].innerHTML = "Su";
 		for(let i = 1; i < 7; i++){
+			titles.children[i].style.display = displayVal;
 			week.children[i].style.display = displayVal;
 		}
 	}
