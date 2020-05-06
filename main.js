@@ -1,15 +1,24 @@
-
 window.onload = function(){
 	
 	function mainClock() {
 		let clock = document.getElementById("main-clock");
 		clock.innerHTML = new Date().toLocaleTimeString();
 	}
+	function selectDay(e){
+		let dayNumber = Number(e.target.innerText);
+		let diff = dateFns.getDate(currDate) - dayNumber;
+		if (prevView === 'weekly' && Math.abs(diff) > 6){
+			currDate = dateFns.addMonths(currDate, Math.sign(diff));
+			updateFooter();
+		}
+		currDate = dateFns.setDate(currDate, dayNumber);
+		console.log(currDate);
+	}
 	function changeDailyView(){
 		let day = document.getElementById("calendar-root").children[0].children[0];
 		day.style.opacity = 1;
+		day.addEventListener("click", selectDay);
 		updateDailyView();
-
 	}
 	function updateDailyView(){
 		let day = document.getElementById("calendar-root").children[0].children[0];
@@ -30,7 +39,7 @@ window.onload = function(){
 			day.innerHTML = dateFns.getDate(date);
 			date = dateFns.addDays(date, 1);
 			day.style.display = "block";
-			day.addEventListener("click", null);
+			day.addEventListener("click", selectDay);
 		}
 		updateFooter();
 		
@@ -60,11 +69,11 @@ window.onload = function(){
 				if (i<firstDay || date > lastDay){
 					day.style.opacity = 0;
 					day.innerHTML = "";
-					day.removeEventListener("click", null);
+					day.removeEventListener("click", selectDay);
 				} else {
 					day.innerHTML = date++;
 					day.style.opacity = 1;
-					day.addEventListener("click", null);
+					day.addEventListener("click", selectDay);
 				}
 
 			}	
