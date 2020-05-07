@@ -1,13 +1,15 @@
-*{
+button, h1, ul, li, select{
 	outline:none;
 	margin:0;
 	padding:0;
+	box-sizing: border-box;
 	font-family: "Courier New", Courier, monospace;
 }
 
 body,html {
 	background:lightgrey;
 	height:100%;
+	font-family: "Courier New", Courier, monospace;
 }
 #top-bar{
 	height: 15%;
@@ -63,21 +65,35 @@ body,html {
 	justify-content: space-between;
 	padding-bottom:3px;
 }
-
-.date {
-	border:0;
+.date{
 	width:14%;
+	height:100%;
+}
+.date > button {
+	border:0;
+	width:100%;
+	height:100%;
 	background-color: darkgrey;
 	box-shadow: 0;
 	color:white;
 	font-size:2em;
 	font-weight:bold;
 }
-
+.date > button:hover{
+	border: 2px;
+	border-style: solid;
+	border-color: orange;
+}
+#pop-out-wrapper{
+	position:relative;
+	top:0;
+}
 #footer{
 	height:15%;
 	display:flex;
 	justify-content: center;
+	margin:0;
+	padding:0;
 
 }
 
@@ -93,6 +109,15 @@ body,html {
 	width:50%;
 	height:100%;
 }
+/* #pop-out{
+	display:none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: rgba(0,0,0,0.6);
+	width:100%;
+	height: 100%;
+} */
 
 /*#image-container {
 	display:none;

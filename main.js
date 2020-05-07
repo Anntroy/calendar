@@ -5,36 +5,48 @@ window.onload = function(){
 		clock.innerHTML = new Date().toLocaleTimeString();
 	}
 	function selectDay(e){
-		let dayNumber = Number(e.target.innerText);
-		let diff = dateFns.getDate(currDate) - dayNumber;
+		let date = e.target;
+		let wrapper = date.parentElement;
+		let dayNumber = Number(date.innerText);
+		let diff = dateFns.getDate(dateTracker) - dayNumber;
 		if (prevView === 'weekly' && Math.abs(diff) > 6){
-			currDate = dateFns.addMonths(currDate, Math.sign(diff));
+			dateTracker = dateFns.addMonths(dateTracker, Math.sign(diff));
 			updateFooter();
 		}
-		currDate = dateFns.setDate(currDate, dayNumber);
-		console.log(currDate);
+		
+		let outer = document.createElement("div");
+		outer.id = "pop-out-wrapper";
+		wrapper.insertBefore(outer, date);
+		let dialog = document.createElement("dialog");
+		dialog.id = "pop-out";
+		outer.appendChild(dialog);
+		dialog.appendChild(document.createElement("input"));
+		dialog.show();
+		
+		dateTracker = dateFns.setDate(dateTracker, dayNumber);
+		date.style.color = "orange";
 	}
 	function changeDailyView(){
-		let day = document.getElementById("calendar-root").children[0].children[0];
+		let day = document.getElementById("calendar-root").children[0].children[0].children[0];
 		day.style.opacity = 1;
 		day.addEventListener("click", selectDay);
 		updateDailyView();
 	}
 	function updateDailyView(){
-		let day = document.getElementById("calendar-root").children[0].children[0];
+		let day = document.getElementById("calendar-root").children[0].children[0].children[0];
 		let title = document.querySelector(".calendar-days").children[0];
-		title.innerHTML = dateFns.format(currDate, 'dddd');
-		day.innerHTML = dateFns.getDate(currDate);
+		title.innerHTML = dateFns.format(dateTracker, 'dddd');
+		day.innerHTML = dateFns.getDate(dateTracker);
 		updateFooter();
 	}
 
 	function changeWeekView(){
 
 		let week = document.getElementById("calendar-root").children[0];
-		let date = dateFns.startOfWeek(currDate);
+		let date = dateFns.startOfWeek(dateTracker);
 		
 		for (let i = 0; i < 7; i++) {
-			let day = week.children[i];
+			let day = week.children[i].children[0];
 			day.style.opacity = 1;
 			day.innerHTML = dateFns.getDate(date);
 			date = dateFns.addDays(date, 1);
@@ -49,8 +61,8 @@ window.onload = function(){
 		
 		//Finding the first day of week to start at
 		//and the number of days in the month
-		let firstDay = dateFns.startOfMonth(currDate);
-		let lastDay = dateFns.endOfMonth(currDate);
+		let firstDay = dateFns.startOfMonth(dateTracker);
+		let lastDay = dateFns.endOfMonth(dateTracker);
 		firstDay = dateFns.getDay(firstDay);
 		lastDay = dateFns.getDate(lastDay);
 		
@@ -64,7 +76,7 @@ window.onload = function(){
 			//This is a loop for the days.
 			for(let i = 0; i < 7; i++){
 
-				let day = week.children[i];
+				let day = week.children[i].children[0];
 				//Deciding to erase the block or add date.
 				if (i<firstDay || date > lastDay){
 					day.style.opacity = 0;
@@ -84,13 +96,14 @@ window.onload = function(){
 	
 	const changeDate = x => {	
 		if (prevView === 'monthly'){
-			currDate = dateFns.addMonths(currDate, x);
+			dateTracker = dateFns.addMonths(dateTracker, x);
 			updateMonthView()
 		} else if (prevView === 'weekly'){
-			currDate = dateFns.addWeeks(currDate, x);
+			dateTracker = dateFns.addWeeks(dateTracker, x);
+			/* */
 			changeWeekView();
 		} else {
-			currDate = dateFns.addDays(currDate, x);
+			dateTracker = dateFns.addDays(dateTracker, x);
 			updateDailyView();
 		}
 	}
@@ -132,10 +145,10 @@ window.onload = function(){
 
 	}
 	const updateFooter = () => {
-		document.getElementById("month-year").innerHTML = dateFns.format(currDate, 'MMMM, ' + dateFns.getYear(currDate));
+		document.getElementById("month-year").innerHTML = dateFns.format(dateTracker, 'MMMM, ' + dateFns.getYear(dateTracker));
 	}
 	let prevView= document.getElementById("view-changer").value;
-	let currDate = new Date();
+	let dateTracker = new Date();
 
 	updateMonthView();
 	setInterval(mainClock,500);
