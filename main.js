@@ -6,7 +6,7 @@ window.onload = function(){
 	}
 	function selectDay(e){
 		let date = e.target;
-		let wrapper = date.parentElement;
+		//let wrapper = date.parentElement;
 		let dayNumber = Number(date.innerText);
 		let diff = dateFns.getDate(dateTracker) - dayNumber;
 		if (prevView === 'weekly' && Math.abs(diff) > 6){
@@ -14,15 +14,15 @@ window.onload = function(){
 			updateFooter();
 		}
 		
-		let outer = document.createElement("div");
-		outer.id = "pop-out-wrapper";
-		wrapper.insertBefore(outer, date);
-		let dialog = document.createElement("dialog");
-		dialog.id = "pop-out";
-		outer.appendChild(dialog);
-		dialog.appendChild(document.createElement("input"));
-		dialog.show();
-		
+		// let outer = document.createElement("div");
+		// outer.id = "pop-out-wrapper";
+		// wrapper.insertBefore(outer, date);
+		// let dialog = document.createElement("dialog");
+		// dialog.id = "pop-out";
+		// outer.appendChild(dialog);
+		// dialog.appendChild(document.createElement("input"));
+		// dialog.show();
+		modal.style.display = 'flex';
 		dateTracker = dateFns.setDate(dateTracker, dayNumber);
 		date.style.color = "orange";
 	}
@@ -147,6 +147,7 @@ window.onload = function(){
 	const updateFooter = () => {
 		document.getElementById("month-year").innerHTML = dateFns.format(dateTracker, 'MMMM, ' + dateFns.getYear(dateTracker));
 	}
+	const closeModal = () => {modal.style.display = 'none';}
 	let prevView= document.getElementById("view-changer").value;
 	let dateTracker = new Date();
 
@@ -155,5 +156,8 @@ window.onload = function(){
 	document.getElementById("left").addEventListener("click", () => {changeDate(-1)});
 	document.getElementById("right").addEventListener("click", () => {changeDate(1)});
 	document.getElementById("view-changer").addEventListener("change", changeView);
+	document.getElementsByClassName("close-btn")[0].addEventListener("click", closeModal);
+
+	let modal = document.getElementsByClassName('modal')[0];
 
 }
