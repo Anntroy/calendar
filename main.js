@@ -148,8 +148,50 @@ window.onload = function(){
 		document.getElementById("month-year").innerHTML = dateFns.format(dateTracker, 'MMMM, ' + dateFns.getYear(dateTracker));
 	}
 	const closeModal = () => {modal.style.display = 'none';}
+	
+	const addNote = (event) => {
+		event.preventDefault();
+		//Div for note + btns
+		const noteDiv = document.createElement("div");
+		noteDiv.classList.add("note");
+		//Note
+		const newNote = document.createElement("li");
+		newNote.innerText = noteInput.value;
+		if (newNote.innerText === "") return;
+		newNote.classList.add("note-item");
+		noteDiv.appendChild(newNote);
+		//Check button
+		const completedButton = document.createElement("button");
+		completedButton.innerHTML = "<i class='fas fa-check'></i>";
+		completedButton.classList.add("complete-btn");
+		noteDiv.appendChild(completedButton);
+		//Trash button
+		const trashButton = document.createElement("button");
+		trashButton.innerHTML = "<i class='fas fa-trash'></i>";
+		trashButton.classList.add("trash-btn");
+		noteDiv.appendChild(trashButton);
+
+		noteList.appendChild(noteDiv);
+		noteInput.value = "";
+	}
+	const deleteCheck = (event) => {
+		const item = event.target;
+		const note = item.parentElement;
+		if (item.classList[0] === "trash-btn"){
+			note.classList.add("deleted");
+			note.addEventListener("transitionend",() => {note.remove()});
+		}
+		if (item.classList[0] === "complete-btn"){
+			note.classList.toggle("completed");
+		}
+	}
+	
 	let prevView= document.getElementById("view-changer").value;
 	let dateTracker = new Date();
+	const modal = document.getElementsByClassName('modal')[0];
+	const noteInput = document.querySelector('.note-input');
+	const noteButton = document.querySelector('.note-btn');
+	const noteList = document.querySelector('.note-list');
 
 	updateMonthView();
 	setInterval(mainClock,500);
@@ -157,7 +199,9 @@ window.onload = function(){
 	document.getElementById("right").addEventListener("click", () => {changeDate(1)});
 	document.getElementById("view-changer").addEventListener("change", changeView);
 	document.getElementsByClassName("close-btn")[0].addEventListener("click", closeModal);
+	
+	noteButton.addEventListener("click", addNote);
+	noteList.addEventListener("click", deleteCheck);
 
-	let modal = document.getElementsByClassName('modal')[0];
 
 }

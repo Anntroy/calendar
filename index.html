@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>Calendar</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<script src="http://cdn.date-fns.org/v1.9.0/date_fns.min.js"></script>
 </head>
@@ -103,8 +104,10 @@
 			
 			<span class="close-btn">&times;</span>
 			<form>
-				<input type="text" class="notes-input"/>
-				<button class="note-btn"></button>
+				<input type="text" class="note-input"/>
+				<button class="note-btn" type="submit">
+					<i class="fas fa-plus-square"></i>
+				</button>
 			</form>
 			<div class="note-container">
 				<ul class="note-list"></ul>
