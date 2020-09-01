@@ -83,6 +83,7 @@ body,html {
 	border: 2px;
 	border-style: solid;
 	border-color: orange;
+	cursor: pointer;
 }
 #pop-out-wrapper{
 	position:relative;

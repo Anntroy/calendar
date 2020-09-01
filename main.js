@@ -13,15 +13,6 @@ window.onload = function(){
 			dateTracker = dateFns.addMonths(dateTracker, Math.sign(diff));
 			updateFooter();
 		}
-		
-		// let outer = document.createElement("div");
-		// outer.id = "pop-out-wrapper";
-		// wrapper.insertBefore(outer, date);
-		// let dialog = document.createElement("dialog");
-		// dialog.id = "pop-out";
-		// outer.appendChild(dialog);
-		// dialog.appendChild(document.createElement("input"));
-		// dialog.show();
 		modal.style.display = 'flex';
 		dateTracker = dateFns.setDate(dateTracker, dayNumber);
 		date.style.color = "orange";
@@ -160,6 +151,7 @@ window.onload = function(){
 		if (newNote.innerText === "") return;
 		newNote.classList.add("note-item");
 		noteDiv.appendChild(newNote);
+		saveLocalNotes(noteInput.value);
 		//Check button
 		const completedButton = document.createElement("button");
 		completedButton.innerHTML = "<i class='fas fa-check'></i>";
@@ -179,11 +171,64 @@ window.onload = function(){
 		const note = item.parentElement;
 		if (item.classList[0] === "trash-btn"){
 			note.classList.add("deleted");
+			removeLocalNote(note);
 			note.addEventListener("transitionend",() => {note.remove()});
 		}
 		if (item.classList[0] === "complete-btn"){
 			note.classList.toggle("completed");
 		}
+	}
+	const saveLocalNotes = (note) => {
+		let notes;
+		if (localStorage.getItem("notes") === null) {
+			notes = [];
+		}else{
+			notes = JSON.parse(localStorage.getItem("notes"));
+		}
+		notes.push(note);
+		localStorage.setItem("notes", JSON.stringify(notes));
+	}
+	const getNotes = () => {
+		let notes;
+		if (localStorage.getItem("notes") === null) {
+			notes = [];
+		}else{
+			notes = JSON.parse(localStorage.getItem("notes"));
+		}
+		notes.forEach((note)=> {
+			//Div for note + btns
+			const noteDiv = document.createElement("div");
+			noteDiv.classList.add("note");
+			//Note
+			const newNote = document.createElement("li");
+			newNote.innerText = note;
+			if (newNote.innerText === "") return;
+			newNote.classList.add("note-item");
+			noteDiv.appendChild(newNote);
+			//Check button
+			const completedButton = document.createElement("button");
+			completedButton.innerHTML = "<i class='fas fa-check'></i>";
+			completedButton.classList.add("complete-btn");
+			noteDiv.appendChild(completedButton);
+			//Trash button
+			const trashButton = document.createElement("button");
+			trashButton.innerHTML = "<i class='fas fa-trash'></i>";
+			trashButton.classList.add("trash-btn");
+			noteDiv.appendChild(trashButton);
+
+			noteList.appendChild(noteDiv);
+		});
+	}
+	const removeLocalNote = (note) => {
+		let notes;
+		if (localStorage.getItem("notes") === null) {
+			notes = [];
+		}else{
+			notes = JSON.parse(localStorage.getItem("notes"));
+		}
+		const noteIndex = note.children[0].innerText;
+		notes.splice(notes.indexOf(noteIndex), 1);
+		localStorage.setItem("notes", JSON.stringify(notes));
 	}
 	
 	let prevView= document.getElementById("view-changer").value;
@@ -199,7 +244,7 @@ window.onload = function(){
 	document.getElementById("right").addEventListener("click", () => {changeDate(1)});
 	document.getElementById("view-changer").addEventListener("change", changeView);
 	document.getElementsByClassName("close-btn")[0].addEventListener("click", closeModal);
-	
+	getNotes();
 	noteButton.addEventListener("click", addNote);
 	noteList.addEventListener("click", deleteCheck);
 
