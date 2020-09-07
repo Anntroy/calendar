@@ -1,12 +1,16 @@
 window.onload = function(){
+	/*here to reset for testing.*/
+	localStorage.clear();
 	
 	function mainClock() {
 		let clock = document.getElementById("main-clock");
 		clock.innerHTML = new Date().toLocaleTimeString();
 	}
+	const dateToString = (date) => {
+		return dateFns.format(date, "MMM/DD/YYYY");
+	}
 	function selectDay(e){
 		let date = e.target;
-		//let wrapper = date.parentElement;
 		let dayNumber = Number(date.innerText);
 		let diff = dateFns.getDate(dateTracker) - dayNumber;
 		if (prevView === 'weekly' && Math.abs(diff) > 6){
@@ -15,6 +19,7 @@ window.onload = function(){
 		}
 		modal.style.display = 'flex';
 		dateTracker = dateFns.setDate(dateTracker, dayNumber);
+		getNotes();
 		date.style.color = "orange";
 	}
 	function changeDailyView(){
@@ -91,7 +96,6 @@ window.onload = function(){
 			updateMonthView()
 		} else if (prevView === 'weekly'){
 			dateTracker = dateFns.addWeeks(dateTracker, x);
-			/* */
 			changeWeekView();
 		} else {
 			dateTracker = dateFns.addDays(dateTracker, x);
@@ -138,7 +142,12 @@ window.onload = function(){
 	const updateFooter = () => {
 		document.getElementById("month-year").innerHTML = dateFns.format(dateTracker, 'MMMM, ' + dateFns.getYear(dateTracker));
 	}
-	const closeModal = () => {modal.style.display = 'none';}
+	const closeModal = () => {
+		modal.style.display = 'none';
+		let list = document.getElementsByClassName("note-list")[0];
+		let notes = list.getElementsByTagName("li");
+		Array.from(notes).forEach((note) => {note.parentElement.remove();});
+	}
 	
 	const addNote = (event) => {
 		event.preventDefault();
@@ -178,23 +187,25 @@ window.onload = function(){
 			note.classList.toggle("completed");
 		}
 	}
-	const saveLocalNotes = (note) => {
+	const existingNotes = (notesDate) => {
 		let notes;
-		if (localStorage.getItem("notes") === null) {
+		if (localStorage.getItem(notesDate) === null) {
 			notes = [];
 		}else{
-			notes = JSON.parse(localStorage.getItem("notes"));
+			notes = JSON.parse(localStorage.getItem(notesDate));
 		}
+		return notes;
+	}
+	const saveLocalNotes = (note) => {
+		let storageDate = dateToString(dateTracker);
+		let notes = existingNotes(storageDate);
 		notes.push(note);
-		localStorage.setItem("notes", JSON.stringify(notes));
+		localStorage.setItem(storageDate, JSON.stringify(notes));
 	}
 	const getNotes = () => {
-		let notes;
-		if (localStorage.getItem("notes") === null) {
-			notes = [];
-		}else{
-			notes = JSON.parse(localStorage.getItem("notes"));
-		}
+
+		let notes = existingNotes(dateToString(dateTracker));
+
 		notes.forEach((note)=> {
 			//Div for note + btns
 			const noteDiv = document.createElement("div");
@@ -220,18 +231,15 @@ window.onload = function(){
 		});
 	}
 	const removeLocalNote = (note) => {
-		let notes;
-		if (localStorage.getItem("notes") === null) {
-			notes = [];
-		}else{
-			notes = JSON.parse(localStorage.getItem("notes"));
-		}
+		let storageDate = dateToString(dateTracker);
+		let notes = existingNotes(storageDate);
 		const noteIndex = note.children[0].innerText;
 		notes.splice(notes.indexOf(noteIndex), 1);
-		localStorage.setItem("notes", JSON.stringify(notes));
+		localStorage.setItem(storageDate, JSON.stringify(notes));
 	}
 	
-	let prevView= document.getElementById("view-changer").value;
+	
+	let prevView = document.getElementById("view-changer").value;
 	let dateTracker = new Date();
 	const modal = document.getElementsByClassName('modal')[0];
 	const noteInput = document.querySelector('.note-input');
@@ -244,7 +252,6 @@ window.onload = function(){
 	document.getElementById("right").addEventListener("click", () => {changeDate(1)});
 	document.getElementById("view-changer").addEventListener("change", changeView);
 	document.getElementsByClassName("close-btn")[0].addEventListener("click", closeModal);
-	getNotes();
 	noteButton.addEventListener("click", addNote);
 	noteList.addEventListener("click", deleteCheck);
 
